@@ -22,7 +22,7 @@ export const restaurants = [
     name: 'Pasta Paradise',
     cuisine: 'Italian',
     rating: 4.7,
-    deliveryTime: '25-35 min',
+    deliveryTime: '',
     image: 'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb', // Pasta image
     dishes: [
       { name: 'Truffle Pasta', image: 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601' },
