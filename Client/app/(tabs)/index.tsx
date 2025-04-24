@@ -4,7 +4,7 @@ import Feather from "react-native-vector-icons/Feather";
 import GuideListScreen from "./GuideListScreen.jsx";
 import TransportScreen from "./TransportScreen.jsx";
 import { FontAwesome5 } from "@expo/vector-icons";
-import Hotels from "./Hotels/index.js";
+import Hotels from "./Hotels/index.tsx";
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen() {
