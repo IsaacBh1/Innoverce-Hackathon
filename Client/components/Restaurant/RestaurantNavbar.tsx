@@ -189,8 +189,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   selectedOption: {
-    backgroundColor: '#ff6b6b',
-    borderColor: '#ff6b6b',
+    backgroundColor: '#0a7ea4',
+    borderColor: '#0a7ea4',
   },
   optionText: {
     color: '#333',
@@ -208,19 +208,19 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: '#ff6b6b',
+    borderColor: '#0a7ea4',
     flex: 1,
     marginRight: 10,
   },
   resetButtonText: {
-    color: '#ff6b6b',
+    color: '#0a7ea4',
     textAlign: 'center',
     fontWeight: 'bold',
   },
   applyButton: {
     padding: 10,
     borderRadius: 5,
-    backgroundColor: '#ff6b6b',
+    backgroundColor: '#0a7ea4',
     flex: 1,
   },
   applyButtonText: {

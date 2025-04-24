@@ -1,11 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import NavigationButton from "../../components/ui/NavigationButton.jsx";
-import Feather from "react-native-vector-icons/Feather";
 import RestaurantsScreen from "./Resturant.tsx";
-import RestaurantDetailsScreen from "./RestaurantDetailsScreen.tsx";
-import { Ionicons } from "@expo/vector-icons";
+import { EvilIcons, Ionicons } from "@expo/vector-icons";
 import TransportScreen from "./TransportScreen.jsx";
+import Account from "./Acount.tsx";
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen() {
@@ -25,16 +23,25 @@ export default function HomeScreen() {
         name="Resturant"
         component={RestaurantsScreen} // Directly pass the Resturant component
         options={{
-          title: "koukou",
+          title: "fast food",
           tabBarIcon: ({ color, size }) => (
             <Ionicons  name="fast-food-outline" color={color} size={size} />
           ),
         }}
       />
-
+          <Tab.Screen
+        name="Acount"
+        component={Account} // Directly pass the Resturant component
+        options={{
+          title: "Acount",
+          tabBarIcon: ({ color, size }) => (
+            <EvilIcons  name="user" color={color} size={size} />
+          ),
+        }}
+      />
       
       
     </Tab.Navigator>
-    </>
+    
   );
 }

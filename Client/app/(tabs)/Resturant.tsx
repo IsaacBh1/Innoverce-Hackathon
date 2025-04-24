@@ -65,10 +65,11 @@ const RestaurantsScreen = () => {
                 <Text style={styles.modalName}>{selectedRestaurant.name}</Text>
                 <Text style={styles.modalCuisine}>{selectedRestaurant.cuisine}</Text>
                 <Text style={styles.modalDescription}>{selectedRestaurant.description}</Text>
-                <Text style={styles.modalPopularDishes}>Popular Dishes:</Text>
-                {selectedRestaurant.popularDishes?.map((dish, index) => (
-                  <Text key={index} style={styles.modalDish}>{dish}</Text>
+                <Text style={styles.modalPopularDishes}>Popular Dishes:
+                {selectedRestaurant.dishes?.map((dish, index) => (
+                  <Text key={index} style={styles.modalDish}>{dish.name}</Text>
                 ))}
+                </Text>
                 <Text style={styles.modalRating}>Rating: {selectedRestaurant.rating} ⭐</Text>
                 <Text style={styles.modalDeliveryTime}>Delivery Time: {selectedRestaurant.deliveryTime}</Text>
                 <Text style={styles.modalPriceRange}>Price Range: {selectedRestaurant.priceRange}</Text>
@@ -157,6 +158,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+   flexDirection:'row',
+   
   },
   modalDish: {
     fontSize: 16,
