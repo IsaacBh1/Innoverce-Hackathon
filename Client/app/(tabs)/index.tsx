@@ -5,6 +5,9 @@ import GuideListScreen from "./GuideListScreen.jsx";
 import TransportScreen from "./TransportScreen.jsx";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Hotels from "./Hotels/index.tsx";
+import RestaurantsScreen from "./Resturant.tsx";
+import { EvilIcons, Ionicons } from "@expo/vector-icons";
+import Account from "./Acount.tsx";
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen() {
@@ -20,6 +23,16 @@ export default function HomeScreen() {
           ),
         }}
       />
+       <Tab.Screen
+        name="Resturant"
+        component={RestaurantsScreen} // Directly pass the Resturant component
+        options={{
+          title: "fast food",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons  name="fast-food-outline" color={color} size={size} />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Transport"
         children={() => <TransportScreen />}
@@ -30,6 +43,19 @@ export default function HomeScreen() {
           ),
         }}
       />
+          <Tab.Screen
+        name="Acount"
+        component={Account} // Directly pass the Resturant component
+        options={{
+          title: "Acount",
+          tabBarIcon: ({ color, size }) => (
+            <EvilIcons  name="user" color={color} size={size} />
+          ),
+        }}
+      />
+      
+      
     </Tab.Navigator>
+    
   );
 }
