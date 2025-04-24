@@ -7,7 +7,6 @@ const Tab = createBottomTabNavigator();
 
 export default function HomeScreen() {
   return (
-<<<<<<< HEAD
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name="Home"
@@ -20,7 +19,7 @@ export default function HomeScreen() {
         }}
       />
       <Tab.Screen
-        name="Black"
+        name="Resturant"
         children={() => <NavigationButton name="Home" icon="home" />}
         options={{
           title: "koukou",
@@ -29,13 +28,6 @@ export default function HomeScreen() {
           ),
         }}
       />
-=======
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={ButtomNavigations} />
-      <Tab.Screen name="Settings" component={npm install react-native-vector-icons} />
-      <Tab.Screen name="Bla" component={ButtomNavigation} />
-      <Tab.Screen name="Koukou" component={ButtomNavigation} />
->>>>>>> 87f09ec (local v3)
     </Tab.Navigator>
   );
 }
