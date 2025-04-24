@@ -1,10 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Feather from "react-native-vector-icons/Feather";
-import GuideListScreen from "./GuideListScreen.jsx";
 import TransportScreen from "./TransportScreen.jsx";
 import { FontAwesome5 } from "@expo/vector-icons";
-import Hotels from "./Hotels/index.js";
+import Hotels from "./Hotels/index.tsx";
+import GuideListScreen from "./GuideListScreen.jsx";
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen() {
@@ -27,6 +26,16 @@ export default function HomeScreen() {
           title: "Transport",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="bus-alt" color={color} size={22} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Guides"
+        component={GuideListScreen}
+        options={{
+          title: "Guides",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="users" color={color} size={22} />
           ),
         }}
       />
