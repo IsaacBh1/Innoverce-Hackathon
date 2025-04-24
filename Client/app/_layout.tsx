@@ -32,11 +32,7 @@ export default function RootLayout() {
   }
 
   return (
-<<<<<<< HEAD
     <>
-=======
-    <ThemeProvider value={DefaultTheme}>
->>>>>>> f039f04f8a24c9be2b36c6b67ae59a3edf50a48a
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
