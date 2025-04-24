@@ -1,16 +1,18 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TransportScreen from "./TransportScreen.jsx";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import Hotels from "./Hotels/index.tsx";
 import RestaurantsScreen from "./Resturant.tsx";
 import { EvilIcons, Ionicons } from "@expo/vector-icons";
 import Account from "./Acount.tsx";
+import GuideListScreen from "./GuideListScreen.jsx"
+
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator screenOptions={{ headerShown: false ,    tabBarActiveTintColor: '#0a7ea4',   }}>
       <Tab.Screen
         name="Hotels"
         component={Hotels}
@@ -25,9 +27,9 @@ export default function HomeScreen() {
         name="Resturant"
         component={RestaurantsScreen} // Directly pass the Resturant component
         options={{
-          title: "fast food",
+          title: "Resturant",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons  name="fast-food-outline" color={color} size={size} />
+            <Ionicons  name="fast-food" color={color} size={size} />
           ),
         }}
       />
@@ -57,7 +59,7 @@ export default function HomeScreen() {
         options={{
           title: "Acount",
           tabBarIcon: ({ color, size }) => (
-            <EvilIcons  name="user" color={color} size={size} />
+            <FontAwesome  name="user-circle-o" color={color} size={size} />
           ),
         }}
       />
