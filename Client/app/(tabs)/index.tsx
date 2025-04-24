@@ -8,6 +8,7 @@ import { EvilIcons, Ionicons } from "@expo/vector-icons";
 import Account from "./Acount.tsx";
 import GuideListScreen from "./GuideListScreen.jsx";
 import Landmarks from "./Landmarks/index.tsx";
+
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen() {
@@ -31,7 +32,7 @@ export default function HomeScreen() {
         options={{
           title: "Resturant",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="fast-food-outline" color={color} size={size} />
+            <Ionicons name="fast-food" color={color} size={size} />
           ),
         }}
       />
@@ -71,7 +72,7 @@ export default function HomeScreen() {
         options={{
           title: "Acount",
           tabBarIcon: ({ color, size }) => (
-            <EvilIcons name="user" color={color} size={size} />
+            <FontAwesome name="user-circle-o" color={color} size={size} />
           ),
         }}
       />
