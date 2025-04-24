@@ -6,9 +6,6 @@ import RestaurantsScreen from "./Resturant.tsx";
 import RestaurantDetailsScreen from "./RestaurantDetailsScreen.tsx";
 import { Ionicons } from "@expo/vector-icons";
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const Tab = createBottomTabNavigator();
 
