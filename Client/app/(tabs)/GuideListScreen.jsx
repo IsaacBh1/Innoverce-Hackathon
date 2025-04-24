@@ -55,8 +55,8 @@ const GuideListScreen = ({ navigation }) => {
         renderItem={({ item }) => (
           <GuideCard
             guide={item}
-            onPress={() => navigation.navigate("GuideProfile", { guide: item })}
-          />
+            onPress={() => navigation.navigate("GuideProfile", { guide })}
+            />
         )}
         showsVerticalScrollIndicator={false}
       />
