@@ -5,18 +5,17 @@ import Feather from "react-native-vector-icons/Feather";
 import RestaurantsScreen from "./Resturant.tsx";
 import RestaurantDetailsScreen from "./RestaurantDetailsScreen.tsx";
 import { Ionicons } from "@expo/vector-icons";
-
-
+import TransportScreen from "./TransportScreen.jsx";
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen() {
   return (
-    <>
-    <Tab.Navigator screenOptions={{headerShown:false}}>
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name="Home"
-        children={() => <NavigationButton name="Home" icon="home" />}
+        children={() => <TransportScreen/>}
         options={{
+          title: "Home",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" color={color} size={size} />
           ),
@@ -26,6 +25,7 @@ export default function HomeScreen() {
         name="Resturant"
         component={RestaurantsScreen} // Directly pass the Resturant component
         options={{
+          title: "koukou",
           tabBarIcon: ({ color, size }) => (
             <Ionicons  name="fast-food-outline" color={color} size={size} />
           ),

@@ -7,7 +7,7 @@ const Navbar = () => {
     <View style={styles.navbar}>
       <TouchableOpacity style={styles.navItem}>
         <MaterialIcons name="web" size={24} color="black" />
-        <Text style={styles.navText}>Browser sss</Text>
+        <Text style={styles.navText}>Browser</Text>
       </TouchableOpacity>
       
       <TouchableOpacity style={styles.navItem}>
