@@ -6,7 +6,8 @@ import Hotels from "./Hotels/index.tsx";
 import RestaurantsScreen from "./Resturant.tsx";
 import { EvilIcons, Ionicons } from "@expo/vector-icons";
 import Account from "./Acount.tsx";
-import Landmarks from "./Landmarks/index.js";
+import GuideListScreen from "./GuideListScreen.jsx";
+import Landmarks from "./Landmarks/index.tsx";
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen() {
