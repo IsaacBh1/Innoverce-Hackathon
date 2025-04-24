@@ -1,4 +1,4 @@
-import ButtomNavigation from "../../components/BottomNavigation";
+import NavigationButton from "../../components/ui/NavigationButton.jsx";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 export default function HomeScreen() {
   const Tab = createBottomTabNavigator();
