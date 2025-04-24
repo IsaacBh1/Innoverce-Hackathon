@@ -3,42 +3,30 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Feather from "react-native-vector-icons/Feather";
 import GuideListScreen from "./GuideListScreen.jsx";
 import TransportScreen from "./TransportScreen.jsx";
+import { FontAwesome5 } from "@expo/vector-icons";
+import Hotels from "./Hotels/index.js";
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen() {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
-        name="Home"
+        name="Hotels"
+        component={Hotels}
+        options={{
+          title: "Hotels",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="hotel" color={color} size={22} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Transport"
         children={() => <TransportScreen />}
         options={{
-          title: "Home",
+          title: "Transport",
           tabBarIcon: ({ color, size }) => (
-            <Feather name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Black"
-        children={({ navigation }) => (
-          <GuideListScreen navigation={navigation} />
-        )}
-        options={{
-          title: "Guides",
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Black"
-        children={({ navigation }) => (
-          <GuideListScreen navigation={navigation} />
-        )}
-        options={{
-          title: "Guides",
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="home" color={color} size={size} />
+            <FontAwesome5 name="bus-alt" color={color} size={22} />
           ),
         }}
       />
