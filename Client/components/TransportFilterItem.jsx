@@ -12,7 +12,7 @@ const TransportFilterItem = ({ title, icon, selected, onSelect }) => {
       <Icon 
         name={icon} 
         size={22} 
-        color={selected ? '#E84C4F' : '#E84C4F'} 
+        color={selected ? '#0a7ea4' : '#0a7ea4'} 
         style={styles.icon}
       />
       <Text style={[styles.title, selected && styles.selectedTitle]}>
@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     borderColor: '#F0F0F0',
   },
   selectedCard: {
-    borderColor: '#E84C4F',
+    borderColor: '#0a7ea4',
     borderWidth: 1,
-    backgroundColor: '#FFF8F8',
+    backgroundColor: '#eeeeee',
   },
   icon: {
     marginBottom: 10,
