@@ -9,12 +9,12 @@ import {
   TextInput,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons, FontAwesome } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { Colors } from "../../../constants/Colors";
 import { useColorScheme } from "../../../hooks/useColorScheme";
-import { Hotel } from "./types";
-import { mockHotels } from "./mockData";
-import { router } from "expo-router";
+import { mockLandmarks } from "./mockData";
+import { Landmark } from "./types";
 
 // Search bar component
 const SearchBar = ({
@@ -39,7 +39,7 @@ const SearchBar = ({
           style={styles.searchInput}
           value={value}
           onChangeText={onChangeText}
-          placeholder="Search hotels in Oran"
+          placeholder="Search landmarks in Oran"
           placeholderTextColor="#999"
           returnKeyType="search"
           onSubmitEditing={onSubmit}
@@ -49,37 +49,37 @@ const SearchBar = ({
   );
 };
 
-// Hotel card component
-const HotelCard = ({
-  hotel,
+// Landmark card component
+const LandmarkCard = ({
+  landmark,
   onPress,
   onToggleFavorite,
 }: {
-  hotel: Hotel;
+  landmark: Landmark;
   onPress: () => void;
   onToggleFavorite: (id: string) => void;
 }) => {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.9}>
       <Image
-        source={{ uri: hotel.images[0].url }}
-        style={styles.hotelImage}
+        source={{ uri: landmark.images[0].url }}
+        style={styles.landmarkImage}
         resizeMode="cover"
       />
 
       <View style={styles.cardContent}>
         <View style={styles.cardHeader}>
-          <Text style={styles.hotelName} numberOfLines={1}>
-            {hotel.name}
+          <Text style={styles.landmarkName} numberOfLines={1}>
+            {landmark.name}
           </Text>
           <TouchableOpacity
-            onPress={() => onToggleFavorite(hotel.id)}
+            onPress={() => onToggleFavorite(landmark.id)}
             style={styles.favoriteButton}
           >
             <Ionicons
-              name={hotel.isFavorite ? "bookmark" : "bookmark-outline"}
+              name={landmark.isFavorite ? "bookmark" : "bookmark-outline"}
               size={22}
-              color={hotel.isFavorite ? "#0a7ea4" : "#888"}
+              color={landmark.isFavorite ? "#0a7ea4" : "#888"}
             />
           </TouchableOpacity>
         </View>
@@ -87,19 +87,21 @@ const HotelCard = ({
         <View style={styles.locationRow}>
           <Ionicons name="location-outline" size={14} color="#666" />
           <Text style={styles.locationText} numberOfLines={1}>
-            {hotel.address.split(",")[0]}, Algeria
+            {landmark.location.address.split(",")[0]}, Algeria
           </Text>
         </View>
 
-        <View style={styles.ratingRow}>
-          <Text style={styles.ratingText}>{hotel.rating.score.toFixed(1)}</Text>
-          <Text style={styles.ratingCount}>({hotel.rating.count}+)</Text>
+        <View style={styles.categoryRow}>
+          <Ionicons name="pricetag-outline" size={14} color="#666" />
+          <Text style={styles.categoryText}>{landmark.category}</Text>
         </View>
 
-        <View style={styles.priceRow}>
-          <Text style={styles.price}>
-            {hotel.price.current.toLocaleString()} {hotel.price.currency}
-            <Text style={styles.nightText}>/night</Text>
+        <View style={styles.ratingRow}>
+          <Text style={styles.ratingText}>
+            {landmark.rating.score.toFixed(1)}
+          </Text>
+          <Text style={styles.ratingCount}>
+            ({landmark.rating.count}+ reviews)
           </Text>
         </View>
       </View>
@@ -125,16 +127,20 @@ const SectionTitle = ({
   );
 };
 
-// Main component
-const Hotels = () => {
-  const [hotels, setHotels] = useState<Hotel[]>(mockHotels);
+const Landmarks = () => {
+  const [landmarks, setLandmarks] = useState<Landmark[]>(mockLandmarks);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const router = useRouter();
+  const colorScheme = useColorScheme();
+  const colors = Colors[colorScheme];
 
-  // Toggle favorite status for a hotel
+  // Toggle favorite status for a landmark
   const toggleFavorite = (id: string) => {
-    setHotels(
-      hotels.map((hotel) =>
-        hotel.id === id ? { ...hotel, isFavorite: !hotel.isFavorite } : hotel
+    setLandmarks(
+      landmarks.map((landmark) =>
+        landmark.id === id
+          ? { ...landmark, isFavorite: !landmark.isFavorite }
+          : landmark
       )
     );
   };
@@ -142,22 +148,25 @@ const Hotels = () => {
   // Handle search
   const handleSearch = () => {
     if (searchQuery.trim() === "") {
-      setHotels(mockHotels);
+      setLandmarks(mockLandmarks);
       return;
     }
 
-    const filtered = mockHotels.filter(
-      (hotel) =>
-        hotel.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        hotel.address.toLowerCase().includes(searchQuery.toLowerCase())
+    const filtered = mockLandmarks.filter(
+      (landmark) =>
+        landmark.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        landmark.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        landmark.location.address
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase())
     );
 
-    setHotels(filtered);
+    setLandmarks(filtered);
   };
 
-  // Navigate to hotel details
-  const navigateToHotelDetails = (hotelId: string) => {
-    router.push(`/Hotels/${hotelId}`);
+  // Navigate to landmark details page
+  const navigateToLandmarkDetails = (landmark: Landmark) => {
+    router.push(`/Landmarks/${landmark.id}`);
   };
 
   return (
@@ -169,12 +178,18 @@ const Hotels = () => {
       />
 
       <FlatList
-        data={hotels}
+        data={landmarks}
         keyExtractor={(item) => item.id}
+        ListHeaderComponent={() => (
+          <SectionTitle
+            title="Popular Landmarks"
+            onSeeAll={() => console.log("See all landmarks")}
+          />
+        )}
         renderItem={({ item }) => (
-          <HotelCard
-            hotel={item}
-            onPress={() => navigateToHotelDetails(item.id)}
+          <LandmarkCard
+            landmark={item}
+            onPress={() => navigateToLandmarkDetails(item)}
             onToggleFavorite={toggleFavorite}
           />
         )}
@@ -247,7 +262,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
-  hotelImage: {
+  landmarkImage: {
     width: "100%",
     height: 140,
   },
@@ -260,7 +275,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     marginBottom: 8,
   },
-  hotelName: {
+  landmarkName: {
     fontSize: 16,
     fontWeight: "600",
     color: "#333",
@@ -280,10 +295,20 @@ const styles = StyleSheet.create({
     color: "#666",
     marginLeft: 4,
   },
-  ratingRow: {
+  categoryRow: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 6,
+  },
+  categoryText: {
+    fontSize: 14,
+    color: "#0a7ea4",
+    marginLeft: 4,
+    fontWeight: "500",
+  },
+  ratingRow: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   ratingText: {
     fontSize: 14,
@@ -295,19 +320,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "#666",
   },
-  priceRow: {
-    marginTop: 4,
-  },
-  price: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#0a7ea4",
-  },
-  nightText: {
-    fontSize: 13,
-    fontWeight: "400",
-    color: "#666",
-  },
 });
 
-export default Hotels;
+export default Landmarks;

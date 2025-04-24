@@ -9,12 +9,11 @@ import {
   Dimensions,
   Linking,
   Platform,
-  ActivityIndicator,
   FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter, Stack } from "expo-router";
-import { Ionicons, FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import { Colors } from "../../../constants/Colors";
 import { useColorScheme } from "../../../hooks/useColorScheme";
@@ -85,18 +84,6 @@ const ImageCarousel = ({ images }: { images: HotelImage[] }) => {
   );
 };
 
-// Amenity item component
-const AmenityItem = ({ icon, name }: { icon: string; name: string }) => {
-  return (
-    <View style={styles.amenityItem}>
-      <View style={styles.amenityIconContainer}>
-        <Ionicons name={icon as any} size={20} color="#0a7ea4" />
-      </View>
-      <Text style={styles.amenityName}>{name}</Text>
-    </View>
-  );
-};
-
 // Tab button component for the description/reviews tabs
 const TabButton = ({
   title,
@@ -121,39 +108,37 @@ const TabButton = ({
 
 const HotelDetails = () => {
   const { id } = useLocalSearchParams();
-  const [hotel, setHotel] = useState<Hotel | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"description" | "reviews">(
-    "description"
-  );
   const router = useRouter();
-
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme];
 
-  // Find the hotel data
-  useEffect(() => {
-    if (id) {
-      const foundHotel = mockHotels.find((h) => h.id === id);
-      if (foundHotel) {
-        setHotel(foundHotel);
-      }
-      setLoading(false);
-    }
-  }, [id]);
+  // Find the hotel directly from mockData
+  const hotel = mockHotels.find((h) => h.id === id);
+
+  // State for hotel data with favorite status
+  const [hotelData, setHotelData] = useState(hotel);
+
+  // State for active tab
+  const [activeTab, setActiveTab] = useState<"description" | "reviews">(
+    "description"
+  );
 
   // Toggle favorite status
   const toggleFavorite = () => {
-    // Implementation would update favorite status
-    console.log("Toggle favorite");
+    if (hotelData) {
+      setHotelData({
+        ...hotelData,
+        isFavorite: !hotelData.isFavorite,
+      });
+    }
   };
 
   // Open map with hotel location
   const openInMaps = () => {
-    if (!hotel) return;
+    if (!hotelData) return;
 
-    const { latitude, longitude } = hotel.coordinates;
-    const label = encodeURIComponent(hotel.name);
+    const { latitude, longitude } = hotelData.coordinates;
+    const label = encodeURIComponent(hotelData.name);
 
     const scheme = Platform.select({
       ios: "maps:0,0?q=",
@@ -173,26 +158,13 @@ const HotelDetails = () => {
 
   // Call hotel
   const callHotel = () => {
-    if (hotel) {
-      Linking.openURL(`tel:${hotel.contactNumber}`);
+    if (hotelData) {
+      Linking.openURL(`tel:${hotelData.contactNumber}`);
     }
   };
 
-  // Handle booking
-  const handleBooking = () => {
-    console.log("Booking initiated");
-    // Implementation would navigate to booking screen
-  };
-
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0a7ea4" />
-      </View>
-    );
-  }
-
-  if (!hotel) {
+  // If hotel not found, show error view
+  if (!hotelData) {
     return (
       <View style={styles.errorContainer}>
         <Text style={styles.errorText}>Hotel not found</Text>
@@ -221,7 +193,7 @@ const HotelDetails = () => {
         >
           {/* Image Carousel */}
           <View style={styles.carouselWrapper}>
-            <ImageCarousel images={hotel.images} />
+            <ImageCarousel images={hotelData.images} />
 
             {/* Back and Favorite buttons */}
             <TouchableOpacity
@@ -235,31 +207,36 @@ const HotelDetails = () => {
               style={styles.favoriteIconButton}
               onPress={toggleFavorite}
             >
-              <Ionicons name="bookmark-outline" size={24} color="#333" />
+              <Ionicons
+                name={hotelData.isFavorite ? "bookmark" : "bookmark-outline"}
+                size={24}
+                color="#333"
+              />
             </TouchableOpacity>
           </View>
 
           {/* Hotel Info Section */}
           <View style={styles.infoSection}>
             <View style={styles.nameRatingRow}>
-              <Text style={styles.hotelName}>{hotel.name}</Text>
+              <Text style={styles.hotelName}>{hotelData.name}</Text>
               <View style={styles.ratingBadge}>
                 <Ionicons name="star" size={14} color="#FFC107" />
                 <Text style={styles.ratingScore}>
-                  {hotel.rating.score.toFixed(1)}
+                  {hotelData.rating.score.toFixed(1)}
                 </Text>
               </View>
             </View>
 
             <View style={styles.locationRow}>
               <Ionicons name="location-outline" size={16} color="#666" />
-              <Text style={styles.locationText}>{hotel.address}</Text>
+              <Text style={styles.locationText}>{hotelData.address}</Text>
             </View>
 
             <View style={styles.priceRow}>
               <Text style={styles.priceUnit}>From </Text>
               <Text style={styles.priceAmount}>
-                {hotel.price.current.toLocaleString()} {hotel.price.currency}
+                {hotelData.price.current.toLocaleString()}{" "}
+                {hotelData.price.currency}
               </Text>
               <Text style={styles.priceUnit}>/night</Text>
             </View>
@@ -283,7 +260,7 @@ const HotelDetails = () => {
             {activeTab === "description" && (
               <View style={styles.tabContent}>
                 <Text style={styles.descriptionText}>
-                  {hotel.description || "No description available."}
+                  {hotelData.description || "No description available."}
                 </Text>
                 <TouchableOpacity>
                   <Text style={styles.readMoreText}>Read More</Text>
@@ -306,7 +283,7 @@ const HotelDetails = () => {
                         Room Types
                       </Text>
                       <View style={styles.roomTypesRow}>
-                        {hotel.roomTypes.map((room, index) => (
+                        {hotelData.roomTypes.map((room, index) => (
                           <View key={index} style={styles.roomTypeTag}>
                             <Text style={styles.roomTypeText}>{room.name}</Text>
                           </View>
@@ -332,7 +309,7 @@ const HotelDetails = () => {
                       <Text
                         style={[styles.highlightValue, { color: colors.icon }]}
                       >
-                        {hotel.contactNumber}
+                        {hotelData.contactNumber}
                       </Text>
                     </View>
                     <Ionicons
@@ -379,12 +356,6 @@ const HotelDetails = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#fff",
   },
   errorContainer: {
@@ -533,29 +504,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 16,
   },
-  amenitiesContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
-  },
-  amenityItem: {
-    alignItems: "center",
-    width: "22%",
-    marginBottom: 12,
-  },
-  amenityIconContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 12,
-    backgroundColor: "#F5F9FB",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 6,
-  },
-  amenityName: {
-    fontSize: 12,
-    color: "#333",
-  },
   tabsContainer: {
     padding: 16,
     borderTopWidth: 8,
@@ -599,94 +547,6 @@ const styles = StyleSheet.create({
     color: "#0a7ea4",
     marginTop: 8,
   },
-  reviewsText: {
-    fontSize: 14,
-    lineHeight: 22,
-    color: "#666",
-  },
-  roomTypeItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eeeeee",
-  },
-  roomTypeName: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#333",
-  },
-  roomTypeDescription: {
-    fontSize: 14,
-    color: "#666",
-    marginTop: 2,
-  },
-  roomTypePrice: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#0a7ea4",
-  },
-  bookButtonContainer: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 16,
-    backgroundColor: "#fff",
-    borderTopWidth: 1,
-    borderTopColor: "#eeeeee",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  bookButton: {
-    backgroundColor: "#0a7ea4",
-    borderRadius: 12,
-    height: 56,
-    justifyContent: "center",
-    alignItems: "center",
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-  },
-  bookButtonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  navigateButton: {
-    backgroundColor: "#0a7ea4",
-    borderRadius: 12,
-    height: 56,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    flex: 1,
-    marginRight: 8,
-  },
-  disabledBookButton: {
-    backgroundColor: "#cccccc",
-    borderRadius: 12,
-    height: 56,
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1,
-    marginLeft: 8,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-    marginLeft: 8,
-  },
-  disabledButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  // Styles for Highlights section
   highlightsContainer: {
     padding: 16,
     borderTopWidth: 0,
@@ -700,6 +560,7 @@ const styles = StyleSheet.create({
   },
   highlightContent: {
     flex: 1,
+    marginLeft: 12,
   },
   highlightTitle: {
     fontSize: 16,
@@ -726,8 +587,43 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#0a7ea4",
   },
-
-  // Coming Soon section styles
+  bookButtonContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 16,
+    backgroundColor: "#fff",
+    borderTopWidth: 1,
+    borderTopColor: "#eeeeee",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  navigateButton: {
+    backgroundColor: "#0a7ea4",
+    borderRadius: 12,
+    height: 56,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    flex: 1,
+    marginRight: 8,
+  },
+  disabledBookButton: {
+    backgroundColor: "#cccccc",
+    borderRadius: 12,
+    height: 56,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    marginLeft: 8,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginLeft: 8,
+  },
   comingSoonContainer: {
     margin: 16,
     padding: 16,
@@ -737,6 +633,8 @@ const styles = StyleSheet.create({
     position: "relative",
     width: "100%",
     height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   comingSoonTitle: {
     fontSize: 16,
@@ -757,4 +655,5 @@ const styles = StyleSheet.create({
     color: "white",
   },
 });
+
 export default HotelDetails;
