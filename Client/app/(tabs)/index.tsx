@@ -1,10 +1,11 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import NavigationButton from "../../components/ui/NavigationButton.jsx";
-import Feather from "react-native-vector-icons/Feather.js";
-import Hotels from "./Hotels/index.tsx";
+import Feather from "react-native-vector-icons/Feather";
+import GuideListScreen from "./GuideListScreen.jsx";
+import TransportScreen from "./TransportScreen.jsx";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { TransportScreen } from "./TransportScreen.jsx";
+import Hotels from "./Hotels/index.js";
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen() {

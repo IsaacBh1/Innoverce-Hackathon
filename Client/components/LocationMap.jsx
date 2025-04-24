@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
-import Icon from "react-native-vector-icons/Feather";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const LocationMap = ({ transport }) => {
   const transportationData = [
@@ -135,10 +135,10 @@ const LocationMap = ({ transport }) => {
   return (
     <View style={styles.container}>
       <View style={styles.locationHeader}>
-        <Icon name="map-pin" size={20} color="#E84C4F" />
+        <Icon name="map-marker" size={24} color="#0a7ea4" />
         <Text style={styles.locationText}>Your Location</Text>
         <TouchableOpacity style={styles.refreshButton} onPress={handleRefresh}>
-          <Icon name="refresh-cw" size={16} color="#7D7D7D" />
+          <Icon name="refresh" size={24} color="#0a7ea4" />
         </TouchableOpacity>
       </View>
 
@@ -158,7 +158,7 @@ const LocationMap = ({ transport }) => {
                 longitude: region.longitude,
               }}
               title="Your Location"
-              pinColor="#E84C4F"
+              pinColor="#0a7ea4"
             />
             {renderTransportMarkers()}
           </MapView>
@@ -184,7 +184,7 @@ const LocationMap = ({ transport }) => {
           style={styles.currentLocationButton}
           onPress={centerToCurrentLocation}
         >
-          <Icon name="crosshair" size={18} color="#E84C4F" />
+          <Icon name="crosshairs-gps" size={18} color="#0a7ea4" />
         </TouchableOpacity>
       </View>
     </View>
