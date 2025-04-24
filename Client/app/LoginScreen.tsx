@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Uselogin } from '@/hooks/useLogin';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+  const {login,isLoading,err} = Uselogin();
 
-  const handleLogin = () => {
-    if (email && password) {
-      // Replace with actual auth logic
-      Alert.alert('Login successful!');
-      router.push('/(tabs)');
-    } else {
+
+  const handleLogin = async () => {
+    if (!email || !password) {
       Alert.alert('Please enter email and password');
+
+    } else {
+      
+      await login(email,password)
+      Alert.alert('Login successful!');
+      router.push("/(tabs)");
+
     }
   };
 
@@ -53,6 +59,19 @@ export default function LoginScreen() {
           <Text style={styles.signupText}> Sign up</Text>
         </TouchableOpacity>
       </View>
+      {err && (
+  <View style={{
+    backgroundColor: '#f8d7da',
+    padding: 10,
+    borderRadius: 8,
+    marginVertical: 10,
+    borderWidth: 1,
+    borderColor: '#f5c6cb',
+  }}>
+    <Text style={{ color: '#721c24' }}>Incorrect email or password</Text>
+  </View>
+)}
+
     </View>
   );
 }
