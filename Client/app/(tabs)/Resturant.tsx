@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Modal, Button, ScrollView } from 'react-native';
 import { Restaurant ,restaurants } from '../../constants/types';
 import Card from '../../components/ui/Card';
@@ -9,16 +9,30 @@ const RestaurantsScreen = () => {
   const [filteredRestaurants, setFilteredRestaurants] = useState(restaurants);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
+  const [data,setData] = useState<Restaurant>([]);
   const [selectedFilters, setSelectedFilters] = useState({
     cuisine: '',
     priceRange: '',
     minRating: 0,
   });
+  
 
   const handleCardPress = (restaurant: Restaurant) => {
     setSelectedRestaurant(restaurant);
     setModalVisible(true);
   };
+  useEffect(() => {
+    fetch('http://192.168.31.11:8000/api/hotals')
+      .then(res => res.json())
+      .then(data => {
+        setData(data);
+      })
+      .catch(err => {
+        console.error('Failed to fetch:', err);
+      });
+  }, []);
+
+
 
   const renderItem = ({ item }: { item: Restaurant }) => (
     <TouchableOpacity
@@ -38,13 +52,12 @@ const RestaurantsScreen = () => {
       </Card>
     </TouchableOpacity>
   );
-  console.log(selectedFilters)
 
   return (
     <View style={styles.container}>
       <RestaurantNavbar onSearch={() => {}} onFilter={() => {}}   selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters}  />
       <FlatList
-        data={filteredRestaurants}
+        data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}

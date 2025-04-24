@@ -16,7 +16,7 @@ const LandingScreen = () => {
       
       <TouchableOpacity 
         style={styles.button}
-        onPress={() => router.push('/LoginScreen')}
+        onPress={() => router.push('/(tabs)')}
       >
         <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>

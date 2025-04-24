@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -159,6 +159,8 @@ const Hotels = () => {
   const navigateToHotelDetails = (hotelId: string) => {
     router.push(`/Hotels/${hotelId}`);
   };
+ 
+  
 
   return (
     <SafeAreaView style={styles.container}>
