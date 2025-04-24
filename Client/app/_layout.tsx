@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import Navbar from '../components/Navbar';  // Import Navbar component
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -28,11 +29,21 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <Stack>
+        <Stack.Screen
+          name="(tabs)"
+          options={{ headerShown: false }} // Hide header for the tab navigation
+        />
+        <Stack.Screen
+          name="+not-found"
+          options={{
+            headerTitle: () => <Navbar />, // Use Navbar in the NotFound screen
+            headerStyle: { backgroundColor: '#6200EE' }, // Custom header style if needed
+          }}
+        />
       </Stack>
+      <Navbar  />
       <StatusBar style="auto" />
     </ThemeProvider>
   );
