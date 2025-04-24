@@ -5,18 +5,22 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 interface RestaurantNavbarProps {
   onSearch: (query: string) => void;
   onFilter: (filters: { cuisine?: string; priceRange?: string; rating?: number }) => void;
+  selectedFilters:SelectedFilters;
+  setSelectedFilters: React.Dispatch<React.SetStateAction<SelectedFilters>>;
+
+  }
+
+interface SelectedFilters {
+  cuisine: string;
+  priceRange: string;
+  minRating: number;
 }
 
-const RestaurantNavbar: React.FC<RestaurantNavbarProps> = ({ onSearch, onFilter }) => {
+
+const RestaurantNavbar: React.FC<RestaurantNavbarProps> = ({ onSearch, onFilter,selectedFilters, setSelectedFilters }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState({
-    cuisine: '',
-    priceRange: '',
-    minRating: 0,
-  });
 
-  const cuisines = ['All', 'Italian', 'Japanese', 'American', 'Thai', 'Mediterranean'];
   const priceRanges = ['All', '$', '$$', '$$$', '$$$$'];
   const ratings = [0, 3, 4, 4.5]; // 0 means no rating filter
 
@@ -65,24 +69,7 @@ const RestaurantNavbar: React.FC<RestaurantNavbarProps> = ({ onSearch, onFilter 
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Filter Restaurants</Text>
 
-            {/* Cuisine Filter */}
-            <Text style={styles.filterTitle}>Cuisine</Text>
-            <View style={styles.filterOptions}>
-              {cuisines.map((cuisine) => (
-                <TouchableOpacity
-                  key={cuisine}
-                  style={[
-                    styles.filterOption,
-                    selectedFilters.cuisine === cuisine && styles.selectedOption,
-                  ]}
-                  onPress={() => setSelectedFilters({ ...selectedFilters, cuisine })}
-                >
-                  <Text style={selectedFilters.cuisine === cuisine ? styles.selectedOptionText : styles.optionText}>
-                    {cuisine}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+           
 
             {/* Price Range Filter */}
             <Text style={styles.filterTitle}>Price Range</Text>

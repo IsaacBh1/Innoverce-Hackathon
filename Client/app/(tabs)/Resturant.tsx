@@ -5,11 +5,15 @@ import Card from '../../components/ui/Card';
 import RestaurantNavbar from '@/components/Restaurant/RestaurantNavbar';
 
 
-
 const RestaurantsScreen = () => {
   const [filteredRestaurants, setFilteredRestaurants] = useState(restaurants);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
+  const [selectedFilters, setSelectedFilters] = useState({
+    cuisine: '',
+    priceRange: '',
+    minRating: 0,
+  });
 
   const handleCardPress = (restaurant: Restaurant) => {
     setSelectedRestaurant(restaurant);
@@ -34,10 +38,11 @@ const RestaurantsScreen = () => {
       </Card>
     </TouchableOpacity>
   );
+  console.log(selectedFilters)
 
   return (
     <View style={styles.container}>
-      <RestaurantNavbar onSearch={() => {}} onFilter={() => {}} />
+      <RestaurantNavbar onSearch={() => {}} onFilter={() => {}}   selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters}  />
       <FlatList
         data={filteredRestaurants}
         renderItem={renderItem}
