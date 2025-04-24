@@ -11,6 +11,11 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
+
+import Navbar from '../components/Navbar';  // Import Navbar component
+import LandingScreen from './LandingScreen';
+
+// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -32,9 +37,14 @@ export default function RootLayout() {
   return (
     <>
       <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" options={{headerShown:false}} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
+        <Stack.Screen name="LoginScreen" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" options={{headerShown:false}} />
+
+        
       </Stack>
+      {/* <Navbar  /> */}
       <StatusBar style="auto" />
     </>
   );

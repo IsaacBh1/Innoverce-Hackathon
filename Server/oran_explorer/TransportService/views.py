@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .serializers import TouristSerializer,TouristGuideSerializer,TaxiDriverSerializer,TaxiSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -9,9 +10,37 @@ from math import radians, sin, cos, sqrt, atan2
 
 RADIUS_KM = 100  # Static radius
 
+class TouristGuideCreateView(APIView):
+    def post(self, request):
+        serializer = TouristGuideSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class CreateTouristView(APIView):
+    def post(self, request):
+        serializer = TouristSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class CreateTaxiView(APIView):
+    def post(self, request):
+        serializer = TaxiSerializer(data=request.data)
+        if serializer.is_valid():
+            taxi = serializer.save()
+            return Response(TaxiSerializer(taxi).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+class CreateTaxiDriverView(APIView):
+    def post(self, request):
+        serializer = TaxiDriverSerializer(data=request.data)
+        if serializer.is_valid():
+            driver = serializer.save()
+            return Response(TaxiDriverSerializer(driver).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UpdateVehicleLocationView(APIView):
     def post(self, request):
@@ -42,14 +71,17 @@ class UpdateVehicleLocationView(APIView):
 
 
 
-def nearcalc (lat1, lon1, lat2, lon2):
+def nearcalc(lat1, lon1, lat2, lon2):
+    lat1 = float(lat1)
+    lon1 = float(lon1)
+    lat2 = float(lat2)
+    lon2 = float(lon2)
     R = 6371  # Earth radius in km
     dlat = radians(lat2 - lat1)
     dlon = radians(lon2 - lon1)
-    a = sin(dlat/2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon/2)**2
+    a = sin(dlat / 2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2)**2
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
     return R * c
-
 
 class NearbyVehiclesView(APIView):
     def get(self, request):
@@ -59,6 +91,7 @@ class NearbyVehiclesView(APIView):
         except (TypeError, ValueError):
             return Response({"error": "Latitude and longitude must be provided and valid."}, status=400)
 
+        # Fetch all vehicles
         all_vehicles = list(Taxi.objects.select_related('location')) + \
                        list(Bus.objects.select_related('location')) + \
                        list(Train.objects.select_related('location')) + \
@@ -67,7 +100,7 @@ class NearbyVehiclesView(APIView):
         nearby = []
         for vehicle in all_vehicles:
             loc = vehicle.location
-            if  vehicle.status != 'out_of_service' & nearcalc(user_lat, user_lon, loc.latitude, loc.longitude) <= RADIUS_KM:
+            if vehicle.status != 'out_of_service' and nearcalc(user_lat, user_lon, loc.latitude, loc.longitude) <= RADIUS_KM:
                 nearby.append({
                     "type": vehicle.__class__.__name__,
                     "id": vehicle.id,
@@ -77,6 +110,7 @@ class NearbyVehiclesView(APIView):
                 })
 
         return Response({"vehicles": nearby}, status=200)
+
     
 
 

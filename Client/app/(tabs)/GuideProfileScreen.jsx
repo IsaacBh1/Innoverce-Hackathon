@@ -3,9 +3,7 @@ import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Colors } from "../../constants/Colors";
 
-const GuideProfileScreen = ({ route }) => {
-  const { guide } = route.params;
-
+const GuideProfileScreen = ({ guide = {} }) => {
   return (
     <ScrollView style={styles.container}>
       <Image source={{ uri: guide.image }} style={styles.image} />
@@ -20,7 +18,7 @@ const GuideProfileScreen = ({ route }) => {
 
         <View style={styles.section}>
           <Icon name="star" size={18} color={Colors.light.accent} />
-          <Text style={styles.text}>Rating: {guide.rating}</Text>
+          <Text style={styles.text}>Rating: {guide.rating}/5</Text>
         </View>
 
         <View style={styles.section}>
@@ -31,14 +29,13 @@ const GuideProfileScreen = ({ route }) => {
         <View style={styles.section}>
           <Icon name="language" size={18} color={Colors.light.primary} />
           <Text style={styles.text}>
-            Languages: {guide.languages.join(", ")}
+            Languages: {(guide.languages || []).join(", ")}
           </Text>
         </View>
       </View>
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

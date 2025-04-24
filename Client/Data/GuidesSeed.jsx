@@ -1,8 +1,3 @@
-import React from "react";
-import { View, StyleSheet, FlatList } from "react-native";
-import GuideCard from "../../components/GuideCard";
-import { router } from "expo-router";
-
 const GUIDES = [
   {
     id: 1,
@@ -13,6 +8,7 @@ const GUIDES = [
     languages: ["English", "Spanish"],
     bio: "Certified tour guide specializing in historical tours and cultural experiences.",
     image: "https://randomuser.me/api/portraits/men/1.jpg",
+    languages: ["English", "Spanish"],
   },
   {
     id: 2,
@@ -23,6 +19,7 @@ const GUIDES = [
     languages: ["Spanish", "French"],
     bio: "Expert in culinary tours and local gastronomy experiences.",
     image: "https://randomuser.me/api/portraits/women/2.jpg",
+    languages: ["English", "Spanish"],
   },
   {
     id: 3,
@@ -33,6 +30,7 @@ const GUIDES = [
     languages: ["Vietnamese", "English"],
     bio: "Local expert in street food and hidden city gems.",
     image: "https://randomuser.me/api/portraits/men/3.jpg",
+    languages: ["English", "Spanish"],
   },
   {
     id: 4,
@@ -43,42 +41,8 @@ const GUIDES = [
     languages: ["Italian", "English"],
     bio: "Passionate about art, architecture, and Italian history.",
     image: "https://randomuser.me/api/portraits/women/5.jpg",
+    languages: ["English", "Spanish"],
   },
 ];
 
-const GuideListScreen = ({ navigation }) => {
-  return (
-    <View style={styles.container}>
-      <FlatList
-        contentContainerStyle={styles.list}
-        data={GUIDES}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <GuideCard
-            guide={item}
-            onPress={() =>
-              router.push({
-                pathname: "/GuideProfileScreen",
-                params: { guide: item },
-              })
-            }
-          />
-        )}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 24,
-    backgroundColor: "#F5F5F5",
-  },
-  list: {
-    padding: 16,
-  },
-});
-
-export default GuideListScreen;
+export default GUIDES;

@@ -1,12 +1,12 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Feather from "react-native-vector-icons/Feather";
-import GuideListScreen from "./GuideListScreen.jsx";
 import TransportScreen from "./TransportScreen.jsx";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Hotels from "./Hotels/index.tsx";
-import Landmarks from "./Landmarks/index.tsx"; // Import the correct component
-
+import RestaurantsScreen from "./Resturant.tsx";
+import { EvilIcons, Ionicons } from "@expo/vector-icons";
+import Account from "./Acount.tsx";
+import Landmarks from "./Landmarks/index.js";
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen() {
@@ -23,6 +23,16 @@ export default function HomeScreen() {
         }}
       />
       <Tab.Screen
+        name="Resturant"
+        component={RestaurantsScreen} // Directly pass the Resturant component
+        options={{
+          title: "fast food",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="fast-food-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Transport"
         children={() => <TransportScreen />}
         options={{
@@ -33,12 +43,32 @@ export default function HomeScreen() {
         }}
       />
       <Tab.Screen
+        name="Guides"
+        component={GuideListScreen}
+        options={{
+          title: "Guides",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="users" color={color} size={22} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Landmarks"
         component={Landmarks} // Use the landmarks list component
         options={{
           title: "Landmarks",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="landmark" color={color} size={22} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Acount"
+        component={Account} // Directly pass the Resturant component
+        options={{
+          title: "Acount",
+          tabBarIcon: ({ color, size }) => (
+            <EvilIcons name="user" color={color} size={size} />
           ),
         }}
       />
