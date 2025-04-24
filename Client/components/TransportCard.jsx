@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 const TransportCard = ({ title, icon }) => {
   return (
     <TouchableOpacity style={styles.card}>
-      <Icon name={icon} size={26} color="#E76F51" />
+      <Icon name={icon} size={26} color=" #0a7ea4" />
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
   );
