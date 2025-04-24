@@ -2,11 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import NavigationButton from "../../components/ui/NavigationButton.jsx";
 import Feather from "react-native-vector-icons/Feather";
-import TransportScreen from "./TransportScreen.jsx";
 import GuideListScreen from "./GuideListScreen.jsx";
-
-import Hommmee from "./Hotels/index.tsx";
-
 import TransportScreen from "./TransportScreen.jsx";
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +22,7 @@ export default function HomeScreen() {
       />
       <Tab.Screen
         name="Black"
-        children={() => <GuideListScreen />}
+        children={({ navigation }) => <GuideListScreen navigation={navigation} />}
         options={{
           title: "Guides",
           tabBarIcon: ({ color, size }) => (
