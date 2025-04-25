@@ -163,6 +163,11 @@ const HotelDetails = () => {
     }
   };
 
+  // Navigate to credit feature intro
+  const navigateToCreditFeature = () => {
+    router.push("/(tabs)/CreditFeatureIntro");
+  };
+
   // If hotel not found, show error view
   if (!hotelData) {
     return (
@@ -327,15 +332,17 @@ const HotelDetails = () => {
           <View style={{ height: 80 }} />
         </ScrollView>
 
-        {/* Fixed bottom buttons - Navigate and Book (disabled) */}
+        {/* Fixed bottom buttons - Navigate and Book with points */}
         <View style={styles.bookButtonContainer}>
           <TouchableOpacity style={styles.navigateButton} onPress={openInMaps}>
             <Ionicons name="navigate" size={20} color="white" />
             <Text style={styles.buttonText}>Navigate</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.disabledBookButton} disabled={true}>
-            {/* Coming Soon: Book with points */}
+          <TouchableOpacity
+            style={styles.bookButton}
+            onPress={navigateToCreditFeature}
+          >
             <View
               style={[styles.comingSoonContainer, { borderColor: colors.icon }]}
             >
@@ -608,6 +615,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     marginRight: 8,
+  },
+  bookButton: {
+    borderRadius: 12,
+    height: 56,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    marginLeft: 8,
   },
   disabledBookButton: {
     backgroundColor: "#cccccc",

@@ -3,38 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { transportationMockData } from "../Data/transportMockData.js";
 
-const LocationMap = ({ transport }) => {
-  const transportationData = [
-    {
-      id: 1,
-      type: "taxi",
-      latitude: 35.78825 + 0.001,
-      longitude: -0.4324 + 0.002,
-    },
-    {
-      id: 2,
-      type: "bus",
-      latitude: 35.78825 - 0.002,
-      longitude: -0.4324 + 0.001,
-    },
-    {
-      id: 3,
-      type: "tram",
-      latitude: 35.78825 + 0.003,
-      longitude: -0.4324 - 0.001,
-    },
-    {
-      id: 4,
-      type: "taxi",
-      latitude: 36.78825 - 0.0015,
-      longitude: -0.4324 + 0.003,
-    },
-  ];
-
-  const [transportation, setTransportation] = useState(transportationData);
+const LocationMap = ({ type }) => {
   const [selectedTransport, setSelectedTransport] = useState(null);
-
+  const [filteredData, setFilteredData] = useState(transportationMockData);
   const [location, setLocation] = useState(null);
   const [region, setRegion] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -42,7 +15,15 @@ const LocationMap = ({ transport }) => {
 
   useEffect(() => {
     requestLocationPermission();
-  }, []);
+
+    // Filter data based on selected type (case-insensitive comparison)
+    const filtered = transportationMockData.filter((item) => {
+      if (type === "All") return true;
+      return item.type.toLowerCase() === type.toLowerCase();
+    });
+
+    setFilteredData(filtered);
+  }, [type]);
 
   const requestLocationPermission = async () => {
     try {
@@ -68,15 +49,15 @@ const LocationMap = ({ transport }) => {
   const renderTransportMarkers = () => {
     if (!region) return null;
 
-    return transportationData.map((vehicle) => (
+    return filteredData.map((vehicle) => (
       <Marker
         key={vehicle.id}
         coordinate={{
           latitude: vehicle.latitude,
           longitude: vehicle.longitude,
         }}
-        title={vehicle.type.toUpperCase()}
-        description={`Available ${vehicle.type}`}
+        title={vehicle.title || vehicle.type.toUpperCase()}
+        description={vehicle.description || `Available ${vehicle.type}`}
       >
         <View style={styles.transportIcon}>
           <Text style={styles.vehicleEmoji}>
@@ -195,6 +176,7 @@ const LocationMap = ({ transport }) => {
 const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
+    height: "100%",
   },
   locationHeader: {
     flexDirection: "row",
@@ -212,13 +194,13 @@ const styles = StyleSheet.create({
     padding: 6,
   },
   mapContainer: {
-    height: 380,
     backgroundColor: "#E8E8E8",
     borderRadius: 16,
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
     overflow: "hidden",
+    height: "100%",
   },
   map: {
     width: "100%",

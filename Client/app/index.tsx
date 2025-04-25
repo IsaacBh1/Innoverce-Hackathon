@@ -1,25 +1,33 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { useRouter } from 'expo-router';
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Image, ActivityIndicator } from "react-native";
+import { useRouter } from "expo-router";
 
-const LandingScreen = () => {
+const SplashScreen = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Set a timeout for 2 seconds before navigating
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      router.replace("/(tabs)");
+    }, 2000);
+
+    // Clear the timeout if component unmounts
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <View style={styles.container}>
-      <Image 
-        source={{ uri: 'https://example.com/your-logo-or-hero-image.jpg' }} 
+      <Image
+        source={{ uri: "https://iili.io/3MgJxN2.th.png" }}
         style={styles.logo}
       />
-      <Text style={styles.title}>Welcome to Our App</Text>
-      <Text style={styles.subtitle}>Discover great restaurants and more</Text>
-      
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={() => router.push('/(tabs)')}
-      >
-        <Text style={styles.buttonText}>Get Started</Text>
-      </TouchableOpacity>
+      <Text style={styles.subtitle}>
+        Seamless travel. Effortless discovery.
+      </Text>
+
+      <ActivityIndicator size="large" color="#0a7ea4" style={styles.loader} />
     </View>
   );
 };
@@ -27,39 +35,31 @@ const LandingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
     padding: 20,
   },
   logo: {
-    width: 150,
-    height: 150,
-    marginBottom: 30,
+    width: 200,
+    height: 200,
+    marginBottom: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 28,
+    fontWeight: "bold",
     marginBottom: 10,
-    color: '#333',
+    color: "#0a7ea4",
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
-    marginBottom: 40,
-    textAlign: 'center',
+    color: "#666",
+    marginBottom: 30,
+    textAlign: "center",
   },
-  button: {
-    backgroundColor: '#0a7ea4',
-    paddingHorizontal: 40,
-    paddingVertical: 15,
-    borderRadius: 30,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
+  loader: {
+    marginTop: 20,
   },
 });
 
-export default LandingScreen;
+export default SplashScreen;

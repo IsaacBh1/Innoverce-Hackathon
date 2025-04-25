@@ -13,13 +13,15 @@ import LocationMap from "@/components/LocationMap";
 
 const TransportScreen = () => {
   const [selectedFilter, setSelectedFilter] = useState("All");
-
-  // Transport filter options data
+  const handleFilterChange = (type) => {
+    setSelectedFilter(type);
+  };
+  // Transport filter options data - ensure titles match exact types in transportMockData.js
   const transportFilters = [
     { id: "1", title: "All", icon: "train-car" },
     { id: "2", title: "taxi", icon: "car" },
-    { id: "3", title: "Bus", icon: "bus" },
-    { id: "4", title: "tramway", icon: "train" },
+    { id: "3", title: "bus", icon: "bus" },
+    { id: "4", title: "tram", icon: "train" }, // Changed from "tramway" to "tram" to match the data
   ];
 
   return (
@@ -31,9 +33,9 @@ const TransportScreen = () => {
           <TransportFilter
             options={transportFilters}
             selectedFilter={selectedFilter}
-            onSelectFilter={setSelectedFilter}
+            onSelectFilter={handleFilterChange}
           />
-          <LocationMap />
+          <LocationMap type={selectedFilter} />
         </ScrollView>
       </SafeAreaView>
     </>
