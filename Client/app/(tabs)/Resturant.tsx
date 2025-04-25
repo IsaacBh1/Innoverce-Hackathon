@@ -22,7 +22,7 @@ const RestaurantsScreen = () => {
     setModalVisible(true);
   };
   useEffect(() => {
-    fetch('http://192.168.31.11:8000/api/restos')
+    fetch('http://192.168.31.11:8000/api/hotals')
       .then(res => res.json())
       .then(data => {
         setData(data);
