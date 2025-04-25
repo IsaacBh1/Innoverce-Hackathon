@@ -9,7 +9,7 @@ const RestaurantsScreen = () => {
   const [filteredRestaurants, setFilteredRestaurants] = useState(restaurants);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
-  const [data,setData] = useState<Restaurant | null>(null);
+  const [data,setData] = useState<Restaurant>([]);
   const [selectedFilters, setSelectedFilters] = useState({
     cuisine: '',
     priceRange: '',
@@ -26,7 +26,6 @@ const RestaurantsScreen = () => {
       .then(res => res.json())
       .then(data => {
         setData(data);
-        console.log(data);
       })
       .catch(err => {
         console.error('Failed to fetch:', err);
@@ -34,7 +33,8 @@ const RestaurantsScreen = () => {
   }, []);
 
 
-  const renderItem = ({ item }: { item: Restaurant | null }) => (
+
+  const renderItem = ({ item }: { item: Restaurant }) => (
     <TouchableOpacity
       onPress={() => handleCardPress(item)} // Show modal with selected restaurant's details
       activeOpacity={0.8}
@@ -57,8 +57,8 @@ const RestaurantsScreen = () => {
     <View style={styles.container}>
       <RestaurantNavbar onSearch={() => {}} onFilter={() => {}}   selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters}  />
       <FlatList
-        data={filteredRestaurants}
-        renderItem={data}
+        data={data}
+        renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
       />
